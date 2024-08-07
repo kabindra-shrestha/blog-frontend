@@ -3,15 +3,17 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const history = useNavigate();
 
   const handleLogin = () => {
-    axios.post('/api/login', { email, password })
+    axios.post('/api/user/account/v1/users/login', { username, password })
       .then(response => {
         // Save token to local storage or state
-        history.push('/');
+        localStorage.setItem("accessToken", response.access_token);
+        
+        history.push('/home');
       })
       .catch(error => console.error(error));
   };
@@ -20,10 +22,10 @@ const Login = () => {
     <div>
       <h1>Login</h1>
       <input
-        type="email"
-        placeholder="Email"
-        value={email}
-        onChange={e => setEmail(e.target.value)}
+        type="username"
+        placeholder="Username"
+        value={username}
+        onChange={e => setUsername(e.target.value)}
       />
       <input
         type="password"
